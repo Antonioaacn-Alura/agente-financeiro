@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agente Financeiro - Pesquisa Inteligente</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>AgenteFinanceiro</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="active"><i class="fas fa-search"></i> Pesquisa</a>
+                <a href="#about"><i class="fas fa-info-circle"></i> Sobre</a>
+                <a href="#examples"><i class="fas fa-lightbulb"></i> Exemplos</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Pesquisa Financeira com IA</h1>
+                <p class="subtitle">Busque informacoes sobre mercados, economia e investimentos em tempo real</p>
+                
+                <div class="search-container">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="Ex: Qual a cotacao do dolar hoje?" 
+                            autocomplete="off"
+                        >
+                        <button id="searchBtn" onclick="search()">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="quick-searches">
+                    <span class="label">Buscas populares:</span>
+                    <button class="quick-btn" onclick="quickSearch('Cotacao do dolar hoje')">Dolar</button>
+                    <button class="quick-btn" onclick="quickSearch('Ibovespa hoje')">Ibovespa</button>
+                    <button class="quick-btn" onclick="quickSearch('Selic taxa atual')">Selic</button>
+                    <button class="quick-btn" onclick="quickSearch('Bitcoin cotacao')">Bitcoin</button>
+                    <button class="quick-btn" onclick="quickSearch('Ouro cotacao')">Ouro</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-section" id="resultsSection" style="display: none;">
+            <div class="results-container">
+                <div class="result-header">
+                    <h2><i class="fas fa-robot"></i> Resposta do Agente</h2>
+                    <span class="timestamp" id="timestamp"></span>
+                </div>
+                <div class="result-content" id="resultContent"></div>
+                <div class="result-footer">
+                    <span class="source-info"><i class="fas fa-database"></i> Fonte: Tavily Search API</span>
+                    <span class="powered-by">Powered by LangGraph + OpenAI</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="loading-section" id="loadingSection" style="display: none;">
+            <div class="loading-container">
+                <div class="loading-spinner"></div>
+                <p>Processando sua pergunta...</p>
+                <span class="loading-detail">O agente esta buscando informacoes na web</span>
+            </div>
+        </section>
+
+        <section class="error-section" id="errorSection" style="display: none;">
+            <div class="error-container">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Erro ao processar</h3>
+                <p id="errorMessage"></p>
+                <button onclick="clearResults()" class="retry-btn">Tentar novamente</button>
+            </div>
+        </section>
+
+        <section id="about" class="info-section">
+            <div class="info-container">
+                <h2><i class="fas fa-info-circle"></i> Sobre o Agente</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-globe"></i>
+                        <h3>Busca em Tempo Real</h3>
+                        <p>Utiliza a API Tavily para buscar informacoes atualizadas na web</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-brain"></i>
+                        <h3>IA Avancada</h3>
+                        <p>Modelo GPT-4o-mini para gerar respostas inteligentes e contextualizadas</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-project-diagram"></i>
+                        <h3>LangGraph</h3>
+                        <p>Arquitetura de agentes com grafo de estados para raciocinio avancado</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Seguro</h3>
+                        <p>Chaves de API protegidas via variaveis de ambiente</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="examples" class="examples-section">
+            <div class="examples-container">
+                <h2><i class="fas fa-lightbulb"></i> Exemplos de Perguntas</h2>
+                <div class="examples-grid">
+                    <div class="example-card" onclick="quickSearch('Qual a taxa Selic atual?')">
+                        <i class="fas fa-university"></i>
+                        <h4>Taxa Selic</h4>
+                        <p>"Qual a taxa Selic atual?"</p>
+                    </div>
+                    <div class="example-card" onclick="quickSearch('Cotacao do petroleo brent')">
+                        <i class="fas fa-oil-can"></i>
+                        <h4>Petroleo</h4>
+                        <p>"Cotacao do petroleo brent"</p>
+                    </div>
+                    <div class="example-card" onclick="quickSearch('Como esta o mercado financeiro hoje?')">
+                        <i class="fas fa-chart-bar"></i>
+                        <h4>Mercado</h4>
+                        <p>"Como esta o mercado financeiro hoje?"</p>
+                    </div>
+                    <div class="example-card" onclick="quickSearch('Investir em IPCA+ vale a pena?')">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <h4>Investimentos</h4>
+                        <p>"Investir em IPCA+ vale a pena?"</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-info">
+                <p><i class="fas fa-code"></i> Desenvolvido para o Challenge Alura - Trilha ECOA PUC</p>
+                <p><i class="fas fa-graduation-cap"></i> Introducao a LLMs</p>
+            </div>
+            <div class="footer-tech">
+                <span><i class="fab fa-python"></i> Python</span>
+                <span><i class="fas fa-flask"></i> Flask</span>
+                <span><i class="fas fa-project-diagram"></i> LangGraph</span>
+                <span><i class="fas fa-robot"></i> OpenAI</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
