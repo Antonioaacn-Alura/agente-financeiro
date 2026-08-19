@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agente Financeiro - Pesquisa Inteligente</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
@@ -16,18 +16,23 @@
                 <span>AgenteFinanceiro</span>
             </div>
             <div class="nav-links">
-                <a href="#" class="active"><i class="fas fa-search"></i> Pesquisa</a>
+                <a href="#" class="active"><i class="fas fa-home"></i> Home</a>
+                <a href="#mercados"><i class="fas fa-chart-bar"></i> Mercados</a>
+                <a href="#noticias"><i class="fas fa-newspaper"></i> Noticias</a>
                 <a href="#about"><i class="fas fa-info-circle"></i> Sobre</a>
-                <a href="#examples"><i class="fas fa-lightbulb"></i> Exemplos</a>
             </div>
         </div>
     </nav>
+
+    <div class="ticker-bar" id="tickerBar">
+        <div class="ticker-content" id="tickerContent"></div>
+    </div>
 
     <main>
         <section class="hero">
             <div class="hero-content">
                 <h1>Pesquisa Financeira com IA</h1>
-                <p class="subtitle">Busque informacoes sobre mercados, economia e investimentos em tempo real</p>
+                <p class="subtitle">Pergunte ao agente e obtenha respostas sobre mercados, economia e investimentos</p>
                 
                 <div class="search-container">
                     <div class="search-box">
@@ -45,14 +50,22 @@
                 </div>
 
                 <div class="quick-searches">
-                    <span class="label">Buscas populares:</span>
                     <button class="quick-btn" onclick="quickSearch('Cotacao do dolar hoje')">Dolar</button>
                     <button class="quick-btn" onclick="quickSearch('Ibovespa hoje')">Ibovespa</button>
                     <button class="quick-btn" onclick="quickSearch('Selic taxa atual')">Selic</button>
                     <button class="quick-btn" onclick="quickSearch('Bitcoin cotacao')">Bitcoin</button>
                     <button class="quick-btn" onclick="quickSearch('Ouro cotacao')">Ouro</button>
+                    <button class="quick-btn" onclick="quickSearch('Cotacao do euro')">Euro</button>
                 </div>
             </div>
+        </section>
+
+        <section class="market-section" id="mercados">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-line"></i> Principais Indices</h2>
+                <span class="update-time" id="marketTime"></span>
+            </div>
+            <div class="market-grid" id="marketGrid"></div>
         </section>
 
         <section class="results-section" id="resultsSection" style="display: none;">
@@ -86,58 +99,37 @@
             </div>
         </section>
 
-        <section id="about" class="info-section">
-            <div class="info-container">
-                <h2><i class="fas fa-info-circle"></i> Sobre o Agente</h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <i class="fas fa-globe"></i>
-                        <h3>Busca em Tempo Real</h3>
-                        <p>Utiliza a API Tavily para buscar informacoes atualizadas na web</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-brain"></i>
-                        <h3>IA Avancada</h3>
-                        <p>Modelo GPT-4o-mini para gerar respostas inteligentes e contextualizadas</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-project-diagram"></i>
-                        <h3>LangGraph</h3>
-                        <p>Arquitetura de agentes com grafo de estados para raciocinio avancado</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-shield-alt"></i>
-                        <h3>Seguro</h3>
-                        <p>Chaves de API protegidas via variaveis de ambiente</p>
-                    </div>
-                </div>
+        <section class="news-section" id="noticias">
+            <div class="section-header">
+                <h2><i class="fas fa-newspaper"></i> Noticias do Mercado</h2>
             </div>
+            <div class="news-grid" id="newsGrid"></div>
         </section>
 
-        <section id="examples" class="examples-section">
-            <div class="examples-container">
-                <h2><i class="fas fa-lightbulb"></i> Exemplos de Perguntas</h2>
-                <div class="examples-grid">
-                    <div class="example-card" onclick="quickSearch('Qual a taxa Selic atual?')">
-                        <i class="fas fa-university"></i>
-                        <h4>Taxa Selic</h4>
-                        <p>"Qual a taxa Selic atual?"</p>
-                    </div>
-                    <div class="example-card" onclick="quickSearch('Cotacao do petroleo brent')">
-                        <i class="fas fa-oil-can"></i>
-                        <h4>Petroleo</h4>
-                        <p>"Cotacao do petroleo brent"</p>
-                    </div>
-                    <div class="example-card" onclick="quickSearch('Como esta o mercado financeiro hoje?')">
-                        <i class="fas fa-chart-bar"></i>
-                        <h4>Mercado</h4>
-                        <p>"Como esta o mercado financeiro hoje?"</p>
-                    </div>
-                    <div class="example-card" onclick="quickSearch('Investir em IPCA+ vale a pena?')">
-                        <i class="fas fa-hand-holding-usd"></i>
-                        <h4>Investimentos</h4>
-                        <p>"Investir em IPCA+ vale a pena?"</p>
-                    </div>
+        <section id="about" class="info-section">
+            <div class="section-header">
+                <h2><i class="fas fa-info-circle"></i> Sobre o Agente</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-globe"></i>
+                    <h3>Busca em Tempo Real</h3>
+                    <p>Utiliza a API Tavily para buscar informacoes atualizadas na web</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-brain"></i>
+                    <h3>IA Avancada</h3>
+                    <p>Modelo GPT-4o-mini para gerar respostas inteligentes e contextualizadas</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-project-diagram"></i>
+                    <h3>LangGraph</h3>
+                    <p>Arquitetura de agentes com grafo de estados para raciocinio avancado</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Seguro</h3>
+                    <p>Chaves de API protegidas via variaveis de ambiente</p>
                 </div>
             </div>
         </section>
