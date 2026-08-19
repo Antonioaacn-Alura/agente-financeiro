@@ -62,12 +62,3 @@ spec:
       port: 80
       targetPort: 5000
   type: LoadBalancer
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: agente-financeiro-secrets
-type: Opaque
-stringData:
-  openai-api-key: <SUA_CHAVE_OPENAI>
-  tavily-api-key: <SUA_CHAVE_TAVILY>
