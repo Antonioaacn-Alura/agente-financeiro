@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgenteFinanceiro - Tela de Busca</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-color: #0066cc;
+            --primary-dark: #0052a3;
+            --accent-green: #00b386;
+            --accent-red: #e63946;
+            --dark-bg: #1a1f2e;
+            --darker-bg: #131722;
+            --card-bg: #ffffff;
+            --body-bg: #f4f5f7;
+            --text-primary: #1a1f2e;
+            --text-secondary: #6b7280;
+            --border-color: #e5e7eb;
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            font-family: var(--font-family);
+            background-color: var(--body-bg);
+            color: var(--text-primary);
+        }
+        .navbar {
+            background: var(--darker-bg);
+            padding: 0.6rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #2a2f3e;
+        }
+        .nav-container { padding: 0 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 0.5rem; color: white; font-size: 1.15rem; font-weight: 700; }
+        .logo i { color: var(--accent-green); font-size: 1.4rem; }
+        .nav-links a { color: #9ca3af; text-decoration: none; font-size: 0.85rem; font-weight: 500; padding: 0.5rem 1rem; border-radius: 6px; transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem; }
+        .nav-links a:hover { color: white; background: rgba(255,255,255,0.08); }
+        .hero { background: linear-gradient(135deg, var(--dark-bg) 0%, #0d1321 100%); padding: 3rem 1.5rem 2rem; text-align: center; color: white; }
+        .hero-content { max-width: 800px; margin: 0 auto; padding: 0 1.5rem; }
+        .hero h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .subtitle { font-size: 1rem; color: #9ca3af; margin-bottom: 2rem; }
+        .search-box { display: flex; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.25); max-width: 600px; margin: 0 auto; }
+        .search-icon { display: flex; align-items: center; padding: 0 1rem; color: var(--text-muted); font-size: 1rem; }
+        .search-box input { flex: 1; border: none; padding: 1rem 0; font-size: 0.95rem; outline: none; font-family: var(--font-family); color: var(--text-primary); }
+        .search-box input::placeholder { color: var(--text-muted); }
+        .search-box button { background: var(--primary-color); color: white; border: none; padding: 1rem 1.5rem; cursor: pointer; transition: background 0.2s; font-size: 1rem; }
+        .search-box button:hover { background: var(--primary-dark); }
+        .quick-searches { display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; padding: 1rem 0; }
+        .quick-btn { background: rgba(255,255,255,0.08); color: #d1d5db; border: 1px solid rgba(255,255,255,0.12); padding: 0.4rem 0.9rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem; font-family: var(--font-family); transition: all 0.2s; }
+        .quick-btn:hover { background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.25); }
+        .footer {
+            background: var(--darker-bg);
+            color: #6b7280;
+            padding: 1.5rem;
+            border-top: 1px solid #2a2f3e;
+        }
+        .footer-container { max-width: 800px; margin: 0 auto; padding: 0 1.5rem; display: flex; justify-content: space-between; align-items center; flex-wrap: wrap; gap: 0.75rem; }
+        .footer-info p { font-size: 0.8rem; margin-bottom: 0.15rem; }
+        .footer-tech { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .footer-tech span { font-size: 0.8rem; display: flex; align-items: center; gap: 0.3rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>AgenteFinanceiro</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="active"><i class="fas fa-home"></i> Home</a>
+                <a href="#mercados"><i class="fas fa-chart-bar"></i> Mercados</a>
+                <a href="#noticias"><i class="fas fa-newspaper"></i> Noticias</a>
+                <a href="#sobre"><i class="fas fa-info-circle"></i> Sobre</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Pesquisa Financeira com IA</h1>
+                <p class="subtitle">Pergunte ao agente e obtenha respostas sobre mercados, economia e investimentos</p>
+                
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Ex: Qual a cotacao do dolar hoje?" 
+                        autocomplete="off"
+                    >
+                    <button id="searchBtn" onclick="searchDemo()">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="quick-searches">
+                    <button class="quick-btn" onclick="quickSearch('Cotacao do dolar hoje')">Dolar</button>
+                    <button class="quick-btn" onclick="quickSearch('Ibovespa hoje')">Ibovespa</button>
+                    <button class="quick-btn" onclick="quickSearch('Selic taxa atual')">Selic</button>
+                    <button class="quick-btn" onclick="quickSearch('Bitcoin cotacao')">Bitcoin</button>
+                    <button class="quick-btn" onclick="quickSearch('Ouro cotacao')">Ouro</button>
+                    <button class="quick-btn" onclick="quickSearch('Cotacao do euro')">Euro</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-info">
+                <p><i class="fas fa-code"></i> Agente Financeiro</p>
+                <p>Ferramenta de pesquisa inteligente para mercados e economia</p>
+            </div>
+            <div class="footer-tech">
+                <span><i class="fab fa-python"></i> Python</span>
+                <span><i class="fas fa-flask"></i> Flask</span>
+                <span><i class="fas fa-project-diagram"></i> LangGraph</span>
+                <span><i class="fas fa-robot"></i> OpenAI</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function searchDemo() {
+            const input = document.getElementById('searchInput');
+            const query = input.value.trim();
+            if (!query) {
+                alert('Por favor, digite uma pergunta.');
+                return;
+            }
+            alert('Busca simulada: ' + query);
+            input.value = '';
+        }
+
+        function quickSearch(query) {
+            const input = document.getElementById('searchInput');
+            input.value = query;
+            searchDemo();
+        }
+
+        // Allow Enter key to search
+        const input = document.getElementById('searchInput');
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchDemo();
+            }
+        });
+    </script>
+</body>
+</html>
